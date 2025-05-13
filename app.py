@@ -7,16 +7,25 @@ def webhook():
     data = request.json
     print("Received webhook:", data)
 
-    actions = data.get("actions", [])
-    for action in actions:
-        if action == "buy":
-            print("Opening long...")
-        elif action == "sell":
-            print("Opening short...")
-        elif action == "close":
-            print("Closing position...")
-        else:
-            print("Unknown action:", action)
+    action = data.get("action")
+
+    # Always close any open positions first
+    print("Closing all open positions...")
+    # Place Tradovate close command here
+
+    if action == "buy":
+        print("Placing long order...")
+        # Place Tradovate long order here
+
+    elif action == "sell":
+        print("Placing short order...")
+        # Place Tradovate short order here
+
+    elif action == "close":
+        print("Action was just 'close' – no new order placed.")
+
+    else:
+        print("Unknown action received.")
 
     return jsonify({"status": "ok"})
 
