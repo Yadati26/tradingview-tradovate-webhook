@@ -2,7 +2,9 @@ services:
   - type: web
     name: tradingview-tradovate-webhook
     env: python
+    plan: free
     buildCommand: ""
     startCommand: python app.py
-    plan: free
-    autoDeploy: true
+    envVars:
+      - key: FLASK_ENV
+        value: production
