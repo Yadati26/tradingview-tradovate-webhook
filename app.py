@@ -9,20 +9,21 @@ def webhook():
 
     action = data.get("action")
 
-    # Always close any open positions first
+    # Step 1: Always close all open positions before taking any new action
     print("Closing all open positions...")
-    # Place Tradovate close command here
+    # === Tradovate CLOSE ALL positions logic goes here ===
 
+    # Step 2: Execute the intended new action AFTER everything is closed
     if action == "buy":
-        print("Placing long order...")
-        # Place Tradovate long order here
+        print("Placing LONG order...")
+        # === Tradovate LONG order logic goes here ===
 
     elif action == "sell":
-        print("Placing short order...")
-        # Place Tradovate short order here
+        print("Placing SHORT order...")
+        # === Tradovate SHORT order logic goes here ===
 
     elif action == "close":
-        print("Action was just 'close' – no new order placed.")
+        print("Received 'close' only – no new trade initiated.")
 
     else:
         print("Unknown action received.")
