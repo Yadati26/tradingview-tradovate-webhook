@@ -1,3 +1,7 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
@@ -9,13 +13,23 @@ def webhook():
 
     for action in actions:
         print("Closing all open positions...")
+        # Tradovate close logic here
+
         if action == "buy":
-            print("Placing LONG order...")
+            print("Opening long position...")
+            # Tradovate buy logic here
+
         elif action == "sell":
-            print("Placing SHORT order...")
+            print("Opening short position...")
+            # Tradovate sell logic here
+
         elif action == "close":
-            print("Only closing...")
+            print("Closing position only...")
+
         else:
             print(f"Unknown action: {action}")
 
     return jsonify({"status": "ok"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
