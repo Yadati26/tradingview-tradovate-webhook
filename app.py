@@ -10,13 +10,13 @@ def webhook():
     for action in actions:
         if action == "buy":
             print("Placing long order...")
-            # Call Tradovate API here
+            # Place long via Tradovate API
         elif action == "sell":
             print("Placing short order...")
-            # Call Tradovate API here
+            # Place short via Tradovate API
         elif action == "close":
-            print("Closing position...")
-            # Call Tradovate API here
+            print("Closing all positions...")
+            # Flatten all positions via Tradovate API
         else:
             print(f"Unknown action: {action}")
 
