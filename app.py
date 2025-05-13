@@ -1,29 +1,23 @@
-from flask import Flask, request, jsonify
-import os
-
-app = Flask(__name__)
-
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
     print("Received webhook:", data)
 
-    action = data.get("action")
-    if action == "buy":
-        print("Placing long order...")
-    elif action == "sell":
-        print("Placing short order...")
-    elif action == "close":
-        print("Closing position...")
-    else:
-        print("Unknown action")
+    actions = data.get("actions", [])
+    if not isinstance(actions, list):
+        return jsonify({"status": "error", "message": "Expected 'actions' to be a list"}), 400
+
+    for action in actions:
+        if action == "buy":
+            print("Placing long order...")
+            # Call Tradovate API here
+        elif action == "sell":
+            print("Placing short order...")
+            # Call Tradovate API here
+        elif action == "close":
+            print("Closing position...")
+            # Call Tradovate API here
+        else:
+            print(f"Unknown action: {action}")
 
     return jsonify({"status": "ok"})
-
-@app.route("/test", methods=["GET"])
-def test():
-    return "Flask is running"
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
