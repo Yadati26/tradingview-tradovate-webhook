@@ -2,37 +2,51 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+# Simulated paper trading state
+position = {
+    "direction": None,   # 'long', 'short', or None
+    "entry_price": None,
+    "size": 0
+}
+
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
-    print("✅ Received webhook:", data)
+    print(f"📡 Received webhook: {data}")
 
     actions = data.get("actions", [])
     if not isinstance(actions, list):
-        print("❌ Invalid format. 'actions' must be a list.")
         return jsonify({"status": "error", "message": "Expected 'actions' to be a list"}), 400
 
     for action in actions:
         if action == "close":
-            print("📍 Closing all open positions...")
-            # TODO: Replace with actual Tradovate API call to close all positions
-            print("✅ Just closing position...")
-
+            if position["direction"] is None:
+                print("📉 No open position to close.")
+            else:
+                print(f"💥 Closing {position['direction']} position of size {position['size']} at simulated price.")
+                position["direction"] = None
+                position["entry_price"] = None
+                position["size"] = 0
         elif action == "buy":
-            print("📍 Closing all open positions before long...")
-            # TODO: Replace with actual Tradovate API call to close positions
-            print("🟢 Opening long position...")
-            # TODO: Replace with Tradovate API call to open long position
-
+            if position["direction"]:
+                print("⚠️ Already in position! Must close first.")
+            else:
+                print("📈 Opening long position at simulated price.")
+                position["direction"] = "long"
+                position["entry_price"] = 100  # Simulated price
+                position["size"] = 1
         elif action == "sell":
-            print("📍 Closing all open positions before short...")
-            # TODO: Replace with actual Tradovate API call to close positions
-            print("🔴 Opening short position...")
-            # TODO: Replace with Tradovate API call to open short position
-
+            if position["direction"]:
+                print("⚠️ Already in position! Must close first.")
+            else:
+                print("📉 Opening short position at simulated price.")
+                position["direction"] = "short"
+                position["entry_price"] = 100  # Simulated price
+                position["size"] = 1
         else:
-            print(f"⚠️ Unknown action: {action}")
+            print(f"❓ Unknown action: {action}")
 
+    print(f"📊 Position state: {position}")
     return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
